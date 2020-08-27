@@ -48,18 +48,7 @@ public class EnemyTracking {
 
     public void moveNextInvader() {
         if (invaders.size() != 0) {
-            if (currentInvader >= invaders.size()) {
-                currentInvader = 0;
-            }
-
-            if (currentInvader == 0) {
-                removeDeadInvaders();
-                System.out.println("Checking boundary");
-                checkBoundary();
-            }
-            boolean enemyMoved = false;
-
-            while (!enemyMoved) {
+            if (currentInvader < invaders.size()) {
                 Invader invader = invaders.get(currentInvader);
                 if (invader.getAlive()) {
                     invader.moveX(invader.getMoveDirection() * Globals.enemyMovementPerFrame);
@@ -67,11 +56,12 @@ public class EnemyTracking {
                         invader.moveY(Globals.enemyMovementDown);
                         invader.setToMoveDown(false);
                     }
-                    ++currentInvader;
-                    enemyMoved = true;
-                } else {
-                    ++currentInvader;
                 }
+                ++currentInvader;
+            } else {
+                currentInvader = 0;
+                checkBoundary();
+                removeDeadInvaders();
             }
         }
     }
