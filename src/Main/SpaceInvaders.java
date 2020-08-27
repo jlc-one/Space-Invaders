@@ -13,12 +13,16 @@ import Assets.PlayerShot;
 import Logic.EnemyBoundLogic;
 import Logic.EnemyTracking;
 import Logic.Score;
+import Utilities.PolygonMaker;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -45,19 +49,35 @@ public class SpaceInvaders extends Application {
         Player player = new Player(Globals.WIDTH / 2, Globals.HEIGHT - Globals.bottomPadding);
         Score score = new Score();
 
-        Pane pane = new Pane();
+
+        Image type1a = new Image("File:graphics/type1a.bmp");
+        ImageView pic = new ImageView();
+        pic.setFitHeight(20);
+        pic.setFitWidth(20);
+        pic.setImage(type1a);
+
+        GridPane pane = new GridPane();
+
+
+
+        //Pane pane = new Pane();
         pane.setPrefSize(Globals.WIDTH, Globals.HEIGHT);
         BackgroundFill background = new BackgroundFill(Color.BLACK, null, null);
         pane.setBackground(new Background(background));
 
-        Scene scene = new Scene(pane);
+        pane.getChildren().add(pic);
 
+
+
+        PolygonMaker p1 = new PolygonMaker();
+
+        pane.getChildren().add(p1.drawPolygon0(Globals.WIDTH/2, Globals.HEIGHT/3 * 2));
 
         pane.getChildren().add(player.getAsset());
         invaders.forEach(invader -> pane.getChildren().add(invader.getAsset()));
         //invaders.forEach(invader -> pane.getChildren().add(invader.displayLabel()));
 
-
+        Scene scene = new Scene(pane);
         Map<KeyCode, Boolean> pressedKeys = new HashMap();
 
         scene.setOnKeyPressed(event -> {
@@ -134,6 +154,7 @@ public class SpaceInvaders extends Application {
 
         stage.setTitle("Space Invaders!");
         stage.setScene(scene);
+
         stage.show();
 
     }
