@@ -3,10 +3,8 @@ package Main;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import Assets.Invader;
-import Assets.Player;
-import Assets.PlayerShot;
-import Assets.Sounds;
+import Assets.*;
+import Logic.EnemyShotTracking;
 import Logic.EnemyTracking;
 import Logic.Score;
 import Utilities.PolygonMaker;
@@ -49,6 +47,8 @@ public class SpaceInvaders extends Application {
     public void start(Stage stage) throws Exception {
 
         EnemyTracking enemyTracking = new EnemyTracking();
+        EnemyShotTracking enemyShotTracking = new EnemyShotTracking(enemyTracking);
+
         ArrayList<Invader> invaders = enemyTracking.getInvaders();
 
         Sounds sounds = new Sounds();
@@ -75,7 +75,7 @@ public class SpaceInvaders extends Application {
         hiScore.setTranslateY(70);
         hiScore.setFill(Color.WHITE);
 
-        Text lives = new Text("2");
+        Text lives = new Text("3");
         lives.setFont(Globals.getFont());
         lives.setTranslateX(40);
         lives.setTranslateY(740);
@@ -102,12 +102,18 @@ public class SpaceInvaders extends Application {
 
         //pane.getChildren().add(p1.drawPolygon0(Globals.WIDTH/2, Globals.HEIGHT/3 * 2));
 
+
         pane.getChildren().add(player.getAsset());
+        pane.getChildren().add(player.getImageView());
+
 
 
 
         invaders.forEach(invader -> pane.getChildren().add(invader.getCurrentImageView()));
         invaders.forEach(invader -> pane.getChildren().add(invader.getAsset()));
+
+        enemyShotTracking.getEnemyShots().forEach(shot -> pane.getChildren().add(shot.getAsset()));
+        //invaders.forEach(invader -> pane.getChildren().add(invader.info()));
         //invaders.forEach(invader -> pane.getChildren().add(invader.displayLabel()));
 
         Scene scene = new Scene(pane);
@@ -144,7 +150,7 @@ public class SpaceInvaders extends Application {
                         long elapsedNanos = now - oldFrameTime;
                         long elapsedNanosPerFrame = elapsedNanos / frameTimes.length;
                         double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame;
-                        System.out.println(String.format("Current frame rate: %.3f", frameRate));
+                        //System.out.println(String.format("Current frame rate: %.3f", frameRate));
                     }
 
 
@@ -153,12 +159,22 @@ public class SpaceInvaders extends Application {
                         long t = System.currentTimeMillis();
                         while (true) {
 
-                            if (System.currentTimeMillis() > t + 0) {
+                            if (System.currentTimeMillis() > t + 110) {
                                 wait = false;
                                 break;
                             }
                         }
                     }
+
+                    enemyShotTracking.getEnemyShots().stream()
+                            .filter(shot -> !shot.getAddedToScreen())
+                            .forEach(shot -> pane.getChildren().add(shot.getPoly()));
+
+
+                    enemyShotTracking.shoot();
+
+                    enemyShotTracking.getEnemyShots().forEach(shot -> shot.moveY(Globals.enemyProjectileSpeed));
+
 
                     //remove dead invaders ***change this****
                     invaders.stream()
@@ -186,7 +202,8 @@ public class SpaceInvaders extends Application {
                             player.moveX(Globals.playerMoveSpeed);
                         }
                     }
-                    if (pressedKeys.getOrDefault(KeyCode.SPACE, Boolean.FALSE) && player.getCanShoot()) {
+                    if (pressedKeys.getOrDefault(KeyCode.SPACE, Boolean.FALSE) && player.getCanShoot() && player.getHasReleased()) {
+                        player.setHasReleased(false);
                         PlayerShot shot = new PlayerShot(player.getAsset().getTranslateX(), player.getAsset().getTranslateY());
                         player.setCanShoot(false);
                         playerShot[0] = shot;
@@ -194,6 +211,12 @@ public class SpaceInvaders extends Application {
                         sounds.playShootSound();
 
                     }
+
+                    //stops spam firing
+                    if (!pressedKeys.getOrDefault(KeyCode.SPACE, Boolean.FALSE)) {
+                        player.setHasReleased(true);
+                     }
+
 
                     enemyTracking.moveNextInvader();
 
