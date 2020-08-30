@@ -1,6 +1,7 @@
 package Logic;
 
 import Assets.Invader;
+import Assets.Sounds;
 import Main.Globals;
 
 import java.lang.reflect.Array;
@@ -13,6 +14,12 @@ public class EnemyTracking {
     ArrayList<Invader> invaders;
     private int currentInvader = 0;
 
+    private int soundPhase = 0;
+
+    public int getSoundPhase() {
+        return soundPhase;
+    }
+
     public int getSize() {
         return invaders.size();
     }
@@ -23,11 +30,12 @@ public class EnemyTracking {
         for (int i = 0; i < 55; ++i) {
             int col = (i % 11);
             int row = (i / 11);
-            Invader invader = new Invader(50 + (col * Globals.enemySpacing), 250 + (row * -Globals.enemySpacing));
+            Invader invader = new Invader(50 + (col * Globals.enemyHozSpacing), 390 + (row * -Globals.enemyVertSpacing));
             invader.setScore(scoreWorth(i));
             invader.setRow(row);
             invader.setCol(col);
             invader.setId(i);
+            invader.InitialiseImages();
             invaders.add(invader);
         }
     }
@@ -35,6 +43,11 @@ public class EnemyTracking {
     public ArrayList<Invader> getInvaders() {
         return invaders;
     }
+
+    public int getCurrent() {
+        return currentInvader;
+    }
+
 
     private int scoreWorth(int n) {
         if (n < 22) {
@@ -48,20 +61,25 @@ public class EnemyTracking {
 
     public void moveNextInvader() {
         if (invaders.size() != 0) {
-            if (currentInvader < invaders.size()) {
-                Invader invader = invaders.get(currentInvader);
-                if (invader.getAlive()) {
-                    invader.moveX(invader.getMoveDirection() * Globals.enemyMovementPerFrame);
-                    if (invader.getToMoveDown()) {
-                        invader.moveY(Globals.enemyMovementDown);
-                        invader.setToMoveDown(false);
-                    }
-                }
-                ++currentInvader;
-            } else {
+
+            if (currentInvader >= invaders.size()) {
                 currentInvader = 0;
+                //Sounds.moveSoundStop(soundPhase - 1);
+                //Sounds.moveSoundPlay(soundPhase);
+                ++soundPhase;
                 checkBoundary();
                 removeDeadInvaders();
+            } else {
+
+                Invader invader = invaders.get(currentInvader);
+                //if (invader.getAlive()) {
+                if (invader.getToMoveDown()) {
+                    invader.moveY(Globals.enemyMovementDown);
+                    invader.setToMoveDown(false);
+                } else {
+                invader.moveX(invader.getMoveDirection() * Globals.enemyMovementPerFrame);
+                }
+                ++currentInvader;
             }
         }
     }
@@ -104,7 +122,7 @@ public class EnemyTracking {
 
     private void removeDeadInvaders() {
         invaders.removeAll(invaders.stream()
-                .filter(invader -> !invader.getAlive())
+                .filter(invader -> invader.getToRemove())
                 .collect(Collectors.toList()));
     }
 

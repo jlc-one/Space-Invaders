@@ -27,14 +27,11 @@ public class Player extends Asset implements BitmapIcons{
 
 
     @Override
-    public void setImage(Image image) {
+    public void InitialiseImages() {
 
     }
 
-    @Override
-    public Image getImage() {
-        return bitmap;
-    }
+
 
 
 

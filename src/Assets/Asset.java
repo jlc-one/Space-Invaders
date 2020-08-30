@@ -11,6 +11,7 @@ abstract class Asset {
 
     private Point2D movement;
     private boolean alive;
+    private boolean toRemove;
     private Polygon asset;
 
 
@@ -20,7 +21,16 @@ abstract class Asset {
         this.asset.setTranslateX(xPos);
         this.asset.setTranslateY(yPos);
         this.alive = true;
+        this.toRemove = false;
         this.movement = new Point2D(0,0);
+    }
+
+    public void setToRemove() {
+        toRemove = true;
+    }
+
+    public boolean getToRemove() {
+        return toRemove;
     }
 
     public Polygon getAsset() {

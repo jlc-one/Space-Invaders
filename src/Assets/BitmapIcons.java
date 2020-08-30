@@ -4,8 +4,8 @@ import javafx.scene.image.Image;
 
 public interface BitmapIcons {
 
-    void setImage(Image image);
+    void InitialiseImages();
 
-    Image getImage();
+
 
 }
