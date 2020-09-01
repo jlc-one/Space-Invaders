@@ -48,6 +48,21 @@ public class EnemyTracking {
         return currentInvader;
     }
 
+    public void checkForObstruction(Invader invader) {
+
+        int rowsBelow = 0;
+
+        for (int i = 0; i < invaders.size(); ++i) {
+            if (invader.getCol() == invaders.get(i).getCol() && invader.getId() > invaders.get(i).getId()) {
+                ++rowsBelow;
+            }
+        }
+
+        if (rowsBelow == 0) {
+            invader.setObstructed(false);
+        }
+
+    }
 
     private int scoreWorth(int n) {
         if (n < 22) {
@@ -64,7 +79,6 @@ public class EnemyTracking {
 
             if (currentInvader >= invaders.size()) {
                 currentInvader = 0;
-                //Sounds.moveSoundStop(soundPhase - 1);
                 //Sounds.moveSoundPlay(soundPhase);
                 ++soundPhase;
                 checkBoundary();
@@ -72,6 +86,7 @@ public class EnemyTracking {
             } else {
 
                 Invader invader = invaders.get(currentInvader);
+                checkForObstruction(invader);
                 //if (invader.getAlive()) {
                 if (invader.getToMoveDown()) {
                     invader.moveY(Globals.enemyMovementDown);

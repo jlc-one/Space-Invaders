@@ -3,17 +3,24 @@ package Assets;
 import Main.Globals;
 import Main.SpaceInvaders;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Player extends Asset implements BitmapIcons{
 
     private Image bitmap;
+    private Image dead;
+    private ImageView imageView;
     private boolean canShoot = true;
+    private boolean hasReleased = true;
 
     public Player(int xPos, int yPos) {
-        super(new Polygon(-5, -5, -5, 5, 5, 5, 5, -5), xPos, yPos);
-        getAsset().setStroke(Color.LIMEGREEN);
+        super(new Polygon(-17, -5, -17, 5, 17, 5, 17, -5), xPos, yPos);
+        getAsset().setStroke(Color.BLACK);
+        getAsset().setStrokeWidth(1);
+        getAsset().setFill(null);
+        InitialiseImages();
     }
 
     public void setCanShoot(boolean canShoot) {
@@ -24,11 +31,45 @@ public class Player extends Asset implements BitmapIcons{
         return canShoot;
     }
 
+    public void setHasReleased(boolean released) {
+        hasReleased = released;
+    }
+
+    public boolean getHasReleased() {
+        return hasReleased;
+    }
+
+    @Override
+    public void moveX(double moveSpeed) {
+
+        this.getAsset().setTranslateX(this.getAsset().getTranslateX() + moveSpeed);
+        imageView.setTranslateX(this.getX());
+    }
 
 
     @Override
     public void InitialiseImages() {
+        bitmap = Bitmaps.player;
+        dead = Bitmaps.typeDead;
+        setImageView();
+    }
 
+    public void setImageView() {
+        ImageView img = new ImageView();
+        img.setFitWidth(34);
+        img.setFitHeight(26);
+        img.setTranslateX(getX());
+        img.setTranslateY(getY());
+        if (!this.getAlive()) {
+            img.setImage(dead);
+        } else {
+            img.setImage(bitmap);
+        }
+        imageView = img;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
     }
 
 

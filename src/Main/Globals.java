@@ -1,6 +1,9 @@
 package Main;
 
+import Logic.EnemyTracking;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,30 +12,36 @@ public class Globals {
 
     public static Font font = Font.loadFont("File:graphics/PressStart2P-Regular.ttf", 22);
 
+    public static Color GREEN = Color.rgb(31,255,29);
+
+
+
     public static Font getFont() {
         return font;
     }
 
     //window size
-    final public static int WIDTH = 672;
-    final public static int HEIGHT = 768;
+    final public static short WIDTH = 672;
+    final public static short HEIGHT = 768;
 
     //common
+    public static float volume = 0.3f;
 
 
     //player settings
-    final public static double playerMoveSpeed = 3; //3
-    final public static int sidePadding = 40;
-    final public static int bottomPadding = 120;
-    final public static int playerShotSpeed = -15;
-    final public static int topPadding = 90;
+    final public static float playerMoveSpeed = 3f; //3
+    final public static short sidePadding = 40;
+    final public static short bottomPadding = 105;
+    final public static short playerShotSpeed = -15;
+    final public static short topPadding = 90;
 
     //enemy settings
-    final public static int enemyMovementPerFrame = 4; //4
-    final public static int enemySidePadding = 76;
-    final public static int enemyMovementDown = 20;
-    final public static int enemyVertSpacing = 50;
-    final public static int enemyHozSpacing = 45;
+    final public static short enemyMovementPerFrame = 4; //4
+    final public static short enemySidePadding = 76;
+    final public static short enemyMovementDown = 26;
+    final public static short enemyVertSpacing = 50;
+    final public static short enemyHozSpacing = 45;
+    final public static double enemyProjectileSpeed = 4;
 
 
 }

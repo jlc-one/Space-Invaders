@@ -25,6 +25,10 @@ abstract class Asset {
         this.movement = new Point2D(0,0);
     }
 
+    public void overwriteAsset(Polygon polygon) {
+        asset = polygon;
+    }
+
     public void setToRemove() {
         toRemove = true;
     }

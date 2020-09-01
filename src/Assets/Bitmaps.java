@@ -19,5 +19,6 @@ public class Bitmaps {
     static Image type4 = new Image("File:graphics/type4.bmp");
     static Image type4r = new Image("File:graphics/type4r.bmp");
     static Image typeDead = new Image("File:graphics/typeDead.bmp");
+    static Image player = new Image("File:graphics/playerIcon.bmp");
 
 }

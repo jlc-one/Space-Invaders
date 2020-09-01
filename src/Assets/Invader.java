@@ -17,7 +17,8 @@ public class Invader extends Asset implements BitmapIcons{
     private int row;
     private int col;
     private boolean toMoveDown = false;
-
+    private boolean isObstructed = true;
+    private Text info = new Text();
 
 
     private int phase = 1;
@@ -30,7 +31,19 @@ public class Invader extends Asset implements BitmapIcons{
     private Image currentImage;
     public ImageView currentIV;
 
+    public void setObstructed(boolean obstructed) {
+        isObstructed = obstructed;
+    }
 
+    public boolean getObstructed() {
+        return isObstructed;
+    }
+
+
+    public Text info() {
+
+        return info;
+    }
 
 
     public Invader(int xPos, int yPos) {
@@ -78,6 +91,9 @@ public class Invader extends Asset implements BitmapIcons{
         setCurrentImage();
         this.getAsset().setTranslateX(this.getAsset().getTranslateX() + moveSpeed);
         currentIV.setTranslateX(this.getX());
+        info.setTranslateX(this.getX());
+        info.setTranslateY(this.getY() + 30);
+        info.setText(String.valueOf(isObstructed));
     }
 
     @Override

@@ -1,11 +1,13 @@
 package Assets;
 
+import Main.Globals;
 import javafx.scene.media.AudioClip;
 
 public class Sounds {
 
 
      private AudioClip shoot = new AudioClip("file:audio/shoot.wav");
+
 
      private AudioClip invaderKilled = new AudioClip("file:audio/kill.wav");
 
@@ -18,8 +20,7 @@ public class Sounds {
 
 
     public void playInvaderKilledSound() {
-        invaderKilled.play();
-
+        invaderKilled.play(Globals.volume);
     }
 
     public void stopInvaderKilledSound() {
@@ -27,9 +28,7 @@ public class Sounds {
     }
 
     public void playShootSound() {
-
-        shoot.play();
-
+        shoot.play(Globals.volume);
     }
 
     public void stopShootSound() {
@@ -38,13 +37,17 @@ public class Sounds {
 
     static public void moveSoundPlay(int phase) {
         if (phase % 4 == 0) {
-            sound1.play();
+            sound4.stop();
+            sound1.play(Globals.volume);
         } else if (phase % 4 == 1) {
-            sound2.play();
+            sound1.stop();
+            sound2.play(Globals.volume);
         } else if (phase % 4 == 2) {
-            sound3.play();
+            sound2.stop();
+            sound3.play(Globals.volume);
         } else {
-            sound4.play();
+            sound3.stop();
+            sound4.play(Globals.volume);
         }
     }
 

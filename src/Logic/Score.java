@@ -28,7 +28,6 @@ public class Score {
         } else {
             sb.append(score);
         }
-
         return sb.toString();
     }
 
