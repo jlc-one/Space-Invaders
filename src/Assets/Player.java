@@ -16,8 +16,10 @@ public class Player extends Asset implements BitmapIcons{
     private boolean hasReleased = true;
 
     public Player(int xPos, int yPos) {
-        super(new Polygon(-5, -5, -5, 5, 5, 5, 5, -5), xPos, yPos);
-        getAsset().setStroke(Color.LIMEGREEN);
+        super(new Polygon(-17, -5, -17, 5, 17, 5, 17, -5), xPos, yPos);
+        getAsset().setStroke(Color.BLACK);
+        getAsset().setStrokeWidth(1);
+        getAsset().setFill(null);
         InitialiseImages();
     }
 
@@ -41,7 +43,7 @@ public class Player extends Asset implements BitmapIcons{
     public void moveX(double moveSpeed) {
 
         this.getAsset().setTranslateX(this.getAsset().getTranslateX() + moveSpeed);
-        imageView.setTranslateX(this.getX() - 15);
+        imageView.setTranslateX(this.getX());
     }
 
 
@@ -56,7 +58,7 @@ public class Player extends Asset implements BitmapIcons{
         ImageView img = new ImageView();
         img.setFitWidth(34);
         img.setFitHeight(26);
-        img.setTranslateX(getX()  - 15);
+        img.setTranslateX(getX());
         img.setTranslateY(getY());
         if (!this.getAlive()) {
             img.setImage(dead);

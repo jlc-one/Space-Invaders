@@ -27,16 +27,25 @@ public class EnemyShotTracking {
     }
 
     public void shoot() {
-        if (Math.random() < 0.015) {
+        if (Math.random() < 0.010 && enemyShots.size() < 4) {
             while (true) {
                 int r = rdm.nextInt(enemyTracking.getInvaders().size());
+                int s = rdm.nextInt(3);
                 Invader invader = enemyTracking.getInvaders().get(r);
                 if (!invader.getObstructed()) {
-                    EnemyShot shot = new EnemyShot(invader.getX(), invader.getY(), 1);
-                    addEnemyShot(shot);
-                    System.out.println("Enemy " + invader.getId() + " has shot");
+                    EnemyShot shot = new EnemyShot(invader.getX() + 17, invader.getY(), s);
+                    //addEnemyShot(shot);
+                    //System.out.println("Invader " + invader.getId() + " has shot");
                     break;
                 }
+            }
+        }
+    }
+
+    public void removeShot() {
+        for (int i = 0; i < enemyShots.size(); ++i) {
+            if (!enemyShots.get(i).getAlive()) {
+                enemyShots.remove(i);
             }
         }
     }

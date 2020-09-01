@@ -79,8 +79,7 @@ public class EnemyTracking {
 
             if (currentInvader >= invaders.size()) {
                 currentInvader = 0;
-                //Sounds.moveSoundStop(soundPhase - 1);
-                Sounds.moveSoundPlay(soundPhase);
+                //Sounds.moveSoundPlay(soundPhase);
                 ++soundPhase;
                 checkBoundary();
                 removeDeadInvaders();
